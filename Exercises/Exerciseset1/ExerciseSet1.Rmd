@@ -3,6 +3,7 @@
 title: "Exercise Set 1"
 author: "T. Evgeniou"
 output: html_document
+runtime: shiny
 ---
 
 
@@ -58,8 +59,9 @@ For more information on downloading finance data from the internet as well as on
 1. Can you find some interesting finance related R package or github repository? 
 **Your Answers here:**
 <br>
+https://cran.r-project.org/web/views/Finance.html
 <br>
-
+http://www.quantmod.com/
 <hr>
 <hr>
 
@@ -86,8 +88,32 @@ pnl_plot(SPY)
 
 **Your Answers here:**
 <br>
+We have `r nrow(StockReturns)` days of data, starting from `r rownames(StockReturns)[1]` until `r tail(rownames(StockReturns),1)`.  Here are some basic statistics about the AAPL returns:
+
+1. The cumulative returns of the AAPL index during this period is `r round(100*sum(StockReturns[,2]),1)`%.
+2. The average daily returns of the AAPL index during this period is `r round(100*mean(StockReturns[,2]),3)`%;
+2. The standard deviation of the daily returns of the AAPL index during this period is `r round(100*sd(StockReturns[,1]),2)`%;
+
+Here are returns of the AAPL in this period (note the use of the helper function pnl_plot - defined in file helpersSet1.R):
+
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig.height=4,fig.width= 6, fig=TRUE}
+AAPL = StockReturns[,"AAPL"]
+pnl_plot(AAPL)
+```
 <br>
 <br>
+We have `r nrow(StockReturns)` days of data, starting from `r rownames(StockReturns)[1]` until `r tail(rownames(StockReturns),1)`.  Here are some basic statistics about the YHOO returns:
+
+1. The cumulative returns of the YHOO during this period is `r round(100*sum(StockReturns[,3]),1)`%.
+2. The average daily returns of the YHOO index during this period is `r round(100*mean(StockReturns[,3]),3)`%;
+2. The standard deviation of the daily returns of the YHOO index during this period is `r round(100*sd(StockReturns[,3]),2)`%;
+
+Here are returns of the YHOO in this period (note the use of the helper function pnl_plot - defined in file helpersSet1.R):
+
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig.height=4,fig.width= 6, fig=TRUE}
+YHOO = StockReturns[,"YHOO"]
+pnl_plot(YHOO)
+```
 <br>
 
 <hr>
@@ -127,10 +153,12 @@ We can also transpose the matrix of returns to create a new "horizontal" matrix.
 
 **Your Answers here:**
 <br>
+1. nrow(transposedData)
 <br>
-<br>
+ncol(transposedData)
 <br>
 
+<br>
 <hr>
 <hr>
 
@@ -145,10 +173,12 @@ This is an important step and will get you to think about the overall process on
 
 **Your Answers here:**
 <br>
+1. Change the date at dataSet1.R line 9 
 <br>
+From startDate = "2001-01-01"
 <br>
+To startDate = "2000-12-30"
 <br>
-
 <hr>
 <hr>
 
@@ -179,7 +209,9 @@ myData + StockReturns[1:40,])
 
 **Your Answers here:**
 <br>
+1. It shows [1] 20, I believe it refers to the number of entries of the data.
 <br>
+If I run the command sum(myData = StockReturns[1:20,]) instead, it shows 0.8068457, which I believe is the sum of stock return for the first 20 days. 
 <br>
 <br>
 
@@ -196,7 +228,7 @@ Can you now load another dataset from some CSV file and report some basic statis
 
 Finally, just for fun, one can add some interactivity in the report using [Shiny](http://rmarkdown.rstudio.com/authoring_shiny.html).All one needs to do is set the eval flag of the code chunk below (see the .Rmd file) to "TRUE", add the line "runtime: shiny" at the very begining of the .Rmd file, make the markdown output to be "html_document", and then press "Run Document". 
 
-```{r, eval=FALSE, echo = TRUE}
+```{r, eval=TRUE, echo = TRUE}
 sliderInput("startdate", "Starting Date:", min = 1, max = length(portfolio), 
             value = 1)
 sliderInput("enddate", "End Date:", min = 1, max = length(portfolio), 
