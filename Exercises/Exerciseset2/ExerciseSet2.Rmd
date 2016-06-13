@@ -1,7 +1,7 @@
 ---
-title: "Exercise Set 2: A $300 Billion Strategy"
-author: "T. Evgeniou"
-output: html_document
+title: 'Exercise Set 2: A $300 Billion Strategy'
+author: "Franco Chow"
+output: pdf_document
 ---
 
 <br>
@@ -164,10 +164,56 @@ print(m1,'chart')
 
 **Your Answers here:**
 <br>
+1. With 6 factors we can explain >50% of the data variance
 <br>
+2. 5-yr T-Notes US, 10-yr T-Notes US, The weight is 0.93
 <br>
+3. Component 1 = Bonds
 <br>
+Component 2 = Currencies
+<br>
+Component 3 = European Indices
+<br>
+Component 4 = North American Indices
+<br>
+Component 5 = European Futures
+<br>
+Component 6 = Oil
+<br>
+Component 7 = Metals
+<br>
+Component 8 = Grains / Oilseeds
+<br>
+Component 9 = Precious Metals
+<br>
+Component 10 = East Asian Indices
+<br>
+4.
+**Pre-crisis Years**
+```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
+pre_crisis_data = futures_data[as.Date(rownames(futures_data)) > "2002-11-01" & as.Date(rownames(futures_data)) < "2007-10-01", ]
+Variance_Explained_Table_results<-PCA(pre_crisis_data, graph=FALSE)
+Variance_Explained_Table<-cbind(paste("component",1:ncol(pre_crisis_data),sep=" "),Variance_Explained_Table_results$eig)
+Variance_Explained_Table<-as.data.frame(Variance_Explained_Table)
+colnames(Variance_Explained_Table)<-c("Component","Eigenvalue", "Percentage_of_explained_variance", "Cumulative_percentage_of_explained_variance")
+```
 
+```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
+show_data = data.frame(Variance_Explained_Table)
+m1<-gvisTable(show_data,options=list(width=1920, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'),formats=list(Eigenvalue="#.##",Percentage_of_explained_variance="#.##",Cumulative_percentage_of_explained_variance="#.##"))
+print(m1,'chart')
+```
+
+```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
+eigenvalues  <- Variance_Explained_Table[,2]
+```
+
+```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
+df           <- cbind(as.data.frame(eigenvalues), c(1:length(eigenvalues)), rep(1, length(eigenvalues)))
+colnames(df) <- c("eigenvalues", "components", "abline")
+Line         <- gvisLineChart(as.data.frame(df), xvar="components", yvar=c("eigenvalues","abline"), options=list(title='Scree plot', legend="right", width=900, height=600, hAxis="{title:'Number of Components', titleTextStyle:{color:'black'}}", vAxes="[{title:'Eigenvalues'}]",  series="[{color:'green',pointSize:3, targetAxisIndex: 0}]"))
+print(Line, 'chart')
+```
 
 <hr>
 
@@ -247,7 +293,9 @@ How does this compare with **existing CTA products** such as [this one from Soci
 <br>
 
 **Your Answers here:**
+1. It constructs a matrix
 <br>
+2. 
 <br>
 <br>
 <br>
